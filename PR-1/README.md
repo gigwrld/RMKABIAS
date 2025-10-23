@@ -859,3 +859,135 @@ src="images/Видео%20(1)-03.gif" /></figcaption>
 
 <img src="images/Screen_recording_20251022_224055.gif"
 data-fig-align="center" />
+
+Создан новый модуль «ButtonClicker», в котором реализован обработчик
+событий кнопки следующим образом: по нажатию кнопки меняется содержимое
+«TextView». По нажатию кнопки «WhoAmI» – выводится текст: «Мой номер по
+списку № 2», по нажатию « ItIsNotMe» – «Это не я сделал». А также
+добавлен элемент «CheckBox» изменяющий свое состояние при нажатии на
+кнопки вместе «TextView».
+
+Листинг layout-файла
+\buttonclicker\src\main\res\layout\activity_main.xml:
+
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textViewStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.238" />
+
+    <CheckBox
+        android:id="@+id/myCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="Согласен"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewStudent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnWhoAmI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Who am i?"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStudent"
+        app:layout_constraintEnd_toStartOf="@+id/btnItIsNotMe"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp" />
+    
+    <Button
+        android:id="@+id/btnItIsNotMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onMyButtonClick"
+        android:text="It is not me"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnWhoAmI"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStudent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+Окно программы:
+
+<img src="images/clipboard-588131183.png" data-fig-align="center"
+width="435" />
+
+Листинг программы с обработчиком событий нажатия на кнопки
+(соответственно двумя способами из методички). Файл -
+com/mirea/akg/buttonclicker/MainActivity.java.
+
+``` java
+package com.mirea.akg.buttonclicker;
+
+import android.os.Bundle;
+
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.view.View;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    private TextView textViewStudent;
+    private Button btnWhoAmI;
+    private Button btnItIsNotMe ;
+    private CheckBox myCheckBox;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        textViewStudent = findViewById(R.id.textViewStudent);
+        btnWhoAmI = findViewById(R.id.btnWhoAmI);
+        btnItIsNotMe = findViewById(R.id.btnItIsNotMe);
+        myCheckBox = findViewById(R.id.myCheckBox);
+
+        View.OnClickListener oclBtnWhoAmI = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textViewStudent.setText("Мой номер по списку № 2");
+                myCheckBox.setChecked(true);
+            }
+        };
+        btnWhoAmI.setOnClickListener(oclBtnWhoAmI);
+    }
+    public void onMyButtonClick(View view)
+    {
+        Toast.makeText(this, "Это не я", Toast.LENGTH_SHORT).show();
+    }
+
+
+}
+```
+
+Результат продемонстрирован в gif-файле, в случае его недоступности,
+можно посмотреть видео записи экрана в папке PR-1/ images в репозитории.
+
+<img src="images/Screen_recording_20251023_185516.gif"
+data-fig-align="center" width="318" />
